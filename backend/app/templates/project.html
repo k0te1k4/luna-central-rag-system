@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ project.name }}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div>
+        <a href="/">← Все проекты</a>
+        <h1>{{ project.name }}</h1>
+        <p class="muted">{{ project.description or 'Без описания' }}</p>
+        <div class="muted small">slug={{ project.slug }} | storage_prefix={{ project.storage_prefix }} | vector_store={{ project.active_vector_store_id or '—' }}</div>
+      </div>
+    </header>
+
+    <section class="grid two">
+      <div class="card">
+        <h2>Действия</h2>
+        <div class="stack gap-sm">
+          <button class="button" data-action="sync" data-project-id="{{ project.id }}">Синхронизировать файлы из Object Storage</button>
+          <button class="button" data-action="reindex" data-project-id="{{ project.id }}">Ручной reindex в Yandex Vector Store</button>
+          <pre id="action-result" class="result"></pre>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Загрузка файла</h2>
+        <form id="upload-form" class="stack gap-sm">
+          <input type="hidden" name="project_id" value="{{ project.id }}" />
+          <label>Категория
+            <select name="category">
+              <option value="docs">docs</option>
+              <option value="user-files">user-files</option>
+              <option value="raw">raw</option>
+            </select>
+          </label>
+          <label>Файл <input type="file" name="file" required /></label>
+          <button class="button" type="submit">Загрузить</button>
+        </form>
+        <pre id="upload-result" class="result"></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Тестовый запрос</h2>
+      <form id="query-form" class="stack gap-sm">
+        <textarea name="question" rows="5" placeholder="Спросите по документации проекта…" required></textarea>
+        <button class="button" type="submit">Выполнить запрос</button>
+      </form>
+      <div id="query-result" class="query-result"></div>
+    </section>
+
+    <section class="card">
+      <h2>Файлы</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Категория</th>
+            <th>Файл</th>
+            <th>Размер</th>
+            <th>Обновлён</th>
+            <th>Indexed</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for file in files %}
+          <tr>
+            <td>{{ file.category }}</td>
+            <td>{{ file.relative_path }}</td>
+            <td>{{ file.size }}</td>
+            <td>{{ file.last_modified or '—' }}</td>
+            <td>{{ file.indexed_at or '—' }}</td>
+            <td>
+              {% if file.filename.endswith('.md') or file.filename.endswith('.markdown') or file.filename.endswith('.txt') %}
+                <a href="/api/files/{{ file.id }}/markdown" target="_blank">Открыть markdown</a>
+              {% elif file.filename.endswith('.pdf') %}
+                <a href="/api/files/{{ file.id }}/content" target="_blank">Открыть PDF</a>
+              {% else %}
+                <a href="/api/files/{{ file.id }}/content?download=1">Скачать</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="muted">Файлы ещё не синхронизированы.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+  <script>
+    window.PROJECT_ID = {{ project.id | tojson }};
+  </script>
+  <script src="/static/project.js"></script>
+</body>
+</html>

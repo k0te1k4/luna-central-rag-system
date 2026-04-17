@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LuNA RAG Backend</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div>
+        <h1>LuNA RAG Backend</h1>
+        <p class="muted">Проекты, файлы, reindex и тестовый запрос через единый backend.</p>
+      </div>
+      <a class="button secondary" href="/api/health" target="_blank">API health</a>
+    </header>
+
+    <section class="grid two">
+      <div class="card">
+        <h2>Создать проект</h2>
+        <form id="project-form" class="stack gap-sm">
+          <label>Название <input name="name" required /></label>
+          <label>Slug <input name="slug" required placeholder="luna-programming" /></label>
+          <label>Описание <textarea name="description" rows="3"></textarea></label>
+          <label>Provider config
+            <select name="provider_config_id" required>
+              {% for p in provider_configs %}
+              <option value="{{ p.id }}">{{ p.name }} ({{ p.provider }})</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label>Storage prefix <input name="storage_prefix" placeholder="по умолчанию = slug" /></label>
+          <button class="button" type="submit">Создать проект</button>
+        </form>
+        <pre id="project-form-result" class="result"></pre>
+      </div>
+
+      <div class="card">
+        <h2>Provider configs</h2>
+        {% for p in provider_configs %}
+        <div class="provider-box">
+          <div><strong>{{ p.name }}</strong>{% if p.is_default %} <span class="badge">default</span>{% endif %}</div>
+          <div class="muted small">{{ p.provider }}</div>
+          <pre>{{ p.settings | tojson(indent=2) }}</pre>
+        </div>
+        {% else %}
+        <p class="muted">Нет provider config.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Проекты</h2>
+      <div class="project-list">
+        {% for project in projects %}
+        <a class="project-item" href="/project/{{ project.id }}">
+          <div>
+            <strong>{{ project.name }}</strong>
+            <div class="muted">slug: {{ project.slug }}</div>
+            <div class="muted">storage_prefix: {{ project.storage_prefix }}</div>
+          </div>
+          <div class="right muted">
+            {% if project.last_indexed_at %}
+            indexed: {{ project.last_indexed_at }}
+            {% else %}
+            ещё не индексировался
+            {% endif %}
+          </div>
+        </a>
+        {% else %}
+        <p class="muted">Пока нет проектов.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+  <script src="/static/index.js"></script>
+</body>
+</html>

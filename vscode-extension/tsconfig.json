@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2018",
+    "lib": [
+      "ES2018",
+      "DOM"
+    ],
+    "outDir": "out",
+    "sourceMap": true,
+    "rootDir": ".",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "extension.ts",
+    "**/*.ts",
+    "**/*.d.ts"
+  ]
+}

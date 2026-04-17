@@ -1,0 +1,435 @@
+{
+  "name": "luna-lang-support",
+  "displayName": "LuNA Language Support",
+  "description": "Подсветка синтаксиса, автодополнение и LSP для языка LuNA (.fa + ucodes.cpp).",
+  "version": "0.0.2",
+  "publisher": "localuser",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:luna",
+    "onStartupFinished",
+    "onCommand:luna.assistant.open",
+    "onCommand:luna.assistant.reindexWiki",
+    "onCommand:luna.assistant.toggle",
+    "onCommand:luna.assistant.setApiKey",
+    "onCommand:luna.assistant.explainSelection",
+    "onCommand:luna.assistant.explainFile",
+    "onView:lunaKnowledgeBaseView",
+    "onView:lunaProjectsView",
+    "onCommand:luna.kb.refresh",
+    "onCommand:luna.kb.setStorageCredentials",
+    "onCommand:luna.kb.clearStorageCredentials",
+    "onCommand:luna.kb.createVersion",
+    "onCommand:luna.kb.selectVersion",
+    "onCommand:luna.kb.selectVersionForFolder",
+    "onCommand:luna.kb.syncDocs",
+    "onCommand:luna.kb.uploadDocs",
+    "onCommand:luna.kb.uploadRaw",
+    "onCommand:luna.kb.uploadFolder",
+    "onCommand:luna.kb.uploadUserFiles",
+    "onCommand:luna.kb.listUserFiles",
+    "onCommand:luna.kb.importThesisPdf",
+    "onCommand:luna.kb.deleteObject",
+    "onCommand:luna.kb.openObject",
+    "onCommand:luna.kb.statusBar.selectVersion",
+    "onCommand:luna.assistant.checkStandards"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "luna",
+          "title": "LuNA",
+          "icon": "resources/luna.svg"
+        }
+      ]
+    },
+    "views": {
+      "luna": [
+        {
+          "id": "lunaProjectsView",
+          "name": "Projects"
+        },
+        {
+          "id": "lunaKnowledgeBaseView",
+          "name": "Knowledge Base"
+        }
+      ]
+    },
+    "languages": [
+      {
+        "id": "luna",
+        "aliases": [
+          "LuNA",
+          "luna"
+        ],
+        "extensions": [
+          ".fa"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "luna",
+        "scopeName": "source.luna",
+        "path": "./syntaxes/luna.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "luna.assistant.open",
+        "title": "LuNA: Open AI Assistant"
+      },
+      {
+        "command": "luna.assistant.reindexWiki",
+        "title": "LuNA: Reindex Knowledge Base for Assistant"
+      },
+      {
+        "command": "luna.assistant.toggle",
+        "title": "LuNA: Toggle AI Assistant"
+      },
+      {
+        "command": "luna.assistant.setApiKey",
+        "title": "LuNA: Set Yandex API Key"
+      },
+      {
+        "command": "luna.assistant.explainSelection",
+        "title": "LuNA: Explain Selection"
+      },
+      {
+        "command": "luna.assistant.explainFile",
+        "title": "LuNA: Explain File"
+      },
+      {
+        "command": "luna.kb.refresh",
+        "title": "LuNA KB: Refresh"
+      },
+      {
+        "command": "luna.kb.setStorageCredentials",
+        "title": "LuNA KB: Set Storage Credentials"
+      },
+      {
+        "command": "luna.kb.clearStorageCredentials",
+        "title": "LuNA KB: Clear Storage Credentials"
+      },
+      {
+        "command": "luna.kb.createVersion",
+        "title": "LuNA KB: Create Version"
+      },
+      {
+        "command": "luna.kb.selectVersion",
+        "title": "LuNA KB: Select Version"
+      },
+      {
+        "command": "luna.kb.selectVersionForFolder",
+        "title": "LuNA KB: Select Version for Project"
+      },
+      {
+        "command": "luna.kb.syncDocs",
+        "title": "LuNA KB: Sync Docs"
+      },
+      {
+        "command": "luna.kb.uploadDocs",
+        "title": "LuNA KB: Upload Docs Files"
+      },
+      {
+        "command": "luna.kb.uploadRaw",
+        "title": "LuNA KB: Upload Raw Files"
+      },
+      {
+        "command": "luna.kb.uploadFolder",
+        "title": "LuNA KB: Upload Docs Folder"
+      },
+      {
+        "command": "luna.kb.uploadUserFiles",
+        "title": "LuNA: Add User Files to Assistant"
+      },
+      {
+        "command": "luna.kb.listUserFiles",
+        "title": "LuNA: Manage User Files for Assistant"
+      },
+      {
+        "command": "luna.kb.importThesisPdf",
+        "title": "LuNA KB: Import Thesis PDF"
+      },
+      {
+        "command": "luna.kb.deleteObject",
+        "title": "LuNA KB: Delete Object"
+      },
+      {
+        "command": "luna.kb.openObject",
+        "title": "LuNA KB: Open Object"
+      },
+      {
+        "command": "luna.kb.statusBar.selectVersion",
+        "title": "LuNA KB: Select Version (Status Bar)"
+      },
+      {
+        "command": "luna.assistant.checkStandards",
+        "title": "LuNA: Check .fa Against Standards"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "luna.assistant.explainSelection",
+          "when": "editorHasSelection && (resourceExtname == '.fa' || resourceExtname == '.cpp' || resourceExtname == '.cc' || resourceExtname == '.cxx' || resourceExtname == '.h' || resourceExtname == '.hpp' || resourceExtname == '.hh')",
+          "group": "navigation@20"
+        },
+        {
+          "command": "luna.assistant.explainFile",
+          "when": "resourceExtname == '.fa' || resourceExtname == '.cpp' || resourceExtname == '.cc' || resourceExtname == '.cxx' || resourceExtname == '.h' || resourceExtname == '.hpp' || resourceExtname == '.hh'",
+          "group": "navigation@21"
+        },
+        {
+          "command": "luna.assistant.checkStandards",
+          "when": "resourceExtname == '.fa'",
+          "group": "navigation@22"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "luna.kb.refresh",
+          "when": "view == lunaKnowledgeBaseView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "luna.kb.setStorageCredentials",
+          "when": "view == lunaKnowledgeBaseView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "luna.kb.createVersion",
+          "when": "view == lunaKnowledgeBaseView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "luna.kb.uploadDocs",
+          "when": "view == lunaKnowledgeBaseView && config.luna.kb.wikiReadOnly == false",
+          "group": "navigation@4"
+        },
+        {
+          "command": "luna.kb.uploadRaw",
+          "when": "view == lunaKnowledgeBaseView",
+          "group": "navigation@5"
+        },
+        {
+          "command": "luna.kb.uploadUserFiles",
+          "when": "view == lunaKnowledgeBaseView",
+          "group": "navigation@6"
+        },
+        {
+          "command": "luna.kb.listUserFiles",
+          "when": "view == lunaKnowledgeBaseView",
+          "group": "navigation@7"
+        },
+        {
+          "command": "luna.kb.importThesisPdf",
+          "when": "view == lunaKnowledgeBaseView",
+          "group": "navigation@8"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "luna.kb.deleteObject",
+          "when": "view == lunaKnowledgeBaseView && (viewItem == lunaKbObject || viewItem == lunaKbObjectUser)",
+          "group": "inline@2"
+        },
+        {
+          "command": "luna.kb.openObject",
+          "when": "view == lunaKnowledgeBaseView && (viewItem == lunaKbObject || viewItem == lunaKbObjectUser || viewItem == lunaKbObjectDocs)",
+          "group": "inline@1"
+        },
+        {
+          "command": "luna.kb.selectVersion",
+          "when": "view == lunaKnowledgeBaseView && viewItem == lunaKbVersion",
+          "group": "navigation@1"
+        }
+      ]
+    },
+    "configuration": {
+      "properties": {
+        "luna.assistant.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Включить LuNA AI Assistant (RAG по базе знаний). Если выключено — плагин работает как раньше, без сети и без ИИ."
+        },
+        "luna.assistant.yandexFolderId": {
+          "type": "string",
+          "default": "",
+          "description": "Folder ID в Yandex Cloud. Нужен, чтобы сформировать modelUri для эмбеддингов/генерации (например emb://<folder>/text-search-doc/latest)."
+        },
+        "luna.assistant.vectorStoreId": {
+          "type": "string",
+          "default": "",
+          "description": "(Опционально) ID существующего Vector Store в AI Studio. Если пусто — расширение создаст Vector Store для каждой версии базы знаний и будет хранить id во внутреннем состоянии."
+        },
+        "luna.assistant.vectorStoreNamePrefix": {
+          "type": "string",
+          "default": "luna-kb",
+          "description": "Префикс имени auto-created Vector Store. Итоговое имя: <prefix>-<kbVersion>."
+        },
+        "luna.assistant.recreateVectorStoreOnReindex": {
+          "type": "boolean",
+          "default": true,
+          "description": "Удалять и пересоздавать Vector Store при каждом reindex (чтобы не копились дубликаты файлов)."
+        },
+        "luna.assistant.vectorStore.ttlDays": {
+          "type": "number",
+          "default": 365,
+          "minimum": 1,
+          "maximum": 3650,
+          "description": "TTL для Vector Store (обязательное поле API): сколько дней хранить после last_active_at."
+        },
+        "luna.assistant.enableWebSearch": {
+          "type": "boolean",
+          "default": false,
+          "description": "Разрешить инструмент web_search (поиск в интернете) в дополнение к file_search по базе знаний."
+        },
+        "luna.assistant.search.maxResults": {
+          "type": "number",
+          "default": 6,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Сколько результатов из Vector Store (file_search) подмешивать в контекст."
+        },
+        "luna.assistant.search.chunk.maxTokens": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 2048,
+          "description": "Макс. размер чанка в токенах для индекса. 0 = использовать дефолты на стороне Yandex Cloud."
+        },
+        "luna.assistant.search.chunk.overlapTokens": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 1024,
+          "description": "Перекрытие чанков в токенах. 0 = использовать дефолты."
+        },
+        "luna.assistant.docEmbeddingModelUri": {
+          "type": "string",
+          "default": "",
+          "description": "Model URI для эмбеддингов документов. Рекомендуется: emb://<folder_ID>/text-search-doc/latest"
+        },
+        "luna.assistant.queryEmbeddingModelUri": {
+          "type": "string",
+          "default": "",
+          "description": "Model URI для эмбеддингов запросов. Рекомендуется: emb://<folder_ID>/text-search-query/latest"
+        },
+        "luna.assistant.generationModelUri": {
+          "type": "string",
+          "default": "",
+          "description": "Model URI для генерации ответа. Пример: gpt://<folder_ID>/yandexgpt/latest (уточните в AI Studio)."
+        },
+        "luna.assistant.codeExplain.maxChars": {
+          "type": "number",
+          "default": 16000,
+          "minimum": 2000,
+          "maximum": 200000,
+          "description": "Максимальный размер кода (в символах), отправляемого на объяснение."
+        },
+        "luna.assistant.editorContext.maxChars": {
+          "type": "number",
+          "default": 20000,
+          "minimum": 2000,
+          "maximum": 400000,
+          "description": "Максимальный размер (в символах) контекста из активного редактора, который будет автоматически прикладываться к вопросу, если в нём есть фразы вроде ‘в текущем файле/в открытой программе/в редакторе’."
+        },
+        "luna.kb.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Включить облачную базу знаний LuNA (Yandex Object Storage)."
+        },
+        "luna.kb.wikiReadOnly": {
+          "type": "boolean",
+          "default": true,
+          "description": "Считать wiki (docs/) неизменяемой: скрыть команды загрузки в docs/ и запретить удаление из docs/ через UI. Пользовательские документы добавляются в user-files/."
+        },
+        "luna.kb.storage.bucket": {
+          "type": "string",
+          "default": "",
+          "description": "Имя bucket в Yandex Object Storage, где хранится база знаний."
+        },
+        "luna.kb.storage.endpoint": {
+          "type": "string",
+          "default": "https://storage.yandexcloud.net",
+          "description": "S3 endpoint для Object Storage. Обычно https://storage.yandexcloud.net"
+        },
+        "luna.kb.storage.region": {
+          "type": "string",
+          "default": "ru-central1",
+          "description": "S3 region (для Yandex Cloud обычно ru-central1)."
+        },
+        "luna.kb.storage.basePrefix": {
+          "type": "string",
+          "default": "luna-kb",
+          "description": "Префикс внутри bucket, под которым хранится база знаний (например luna-kb)."
+        },
+        "luna.kb.defaultVersion": {
+          "type": "string",
+          "default": "luna7",
+          "description": "Версия документации по умолчанию (если в проекте не выбрана другая)."
+        },
+        "luna.kb.knownVersions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Если заполнено, ограничивает список версий (иначе версии определяются по папкам в bucket)."
+        },
+        "luna.kb.projectVersion": {
+          "type": "string",
+          "default": "",
+          "description": "Версия документации для текущего проекта (workspace folder)."
+        },
+        "luna.assistant.codeStandardsVersion": {
+          "type": "string",
+          "default": "luna-standards",
+          "description": "KB version that stores LuNA code standards for .fa AI checks. This version is indexed separately from project documentation."
+        },
+        "luna.backend.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Использовать LuNA backend API вместо прямого обращения плагина к Yandex для chat/reindex."
+        },
+        "luna.backend.baseUrl": {
+          "type": "string",
+          "default": "http://localhost:8000",
+          "description": "Базовый URL LuNA backend, например http://localhost:8000"
+        },
+        "luna.backend.projectSlug": {
+          "type": "string",
+          "default": "",
+          "description": "Slug проекта в LuNA backend, который соответствует текущему workspace."
+        }
+      },
+      "title": "LuNA"
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p ."
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.966.0",
+    "pdf-parse": "^1.1.4",
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.8"
+  }
+}
